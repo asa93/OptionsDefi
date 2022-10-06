@@ -1,22 +1,22 @@
 import { deployments, ethers } from "hardhat";
 import { expect } from "chai";
-import { PanopticFactory } from "../types";
+import { OptionsFactory } from "../types";
 
-describe("PanopticFactory", function () {
-  const contractName = "PanopticFactory";
-  let factory: PanopticFactory;
+describe("OptionsFactory", function () {
+  const contractName = "OptionsFactory";
+  let factory: OptionsFactory;
 
   before(async () => {
     await deployments.fixture([
       contractName,
       "OptionEncoding",
-      "PanopticMath",
-      "PanopticHealth",
+      "OptionsMath",
+      "OptionsHealth",
       "SemiFungiblePositionManager",
     ]);
     const { address } = await deployments.get(contractName);
 
-    factory = (await ethers.getContractAt(contractName, address)) as PanopticFactory;
+    factory = (await ethers.getContractAt(contractName, address)) as OptionsFactory;
   });
 
   it("should deploy the factory", async function () {

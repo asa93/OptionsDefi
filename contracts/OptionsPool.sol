@@ -17,16 +17,16 @@ import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 
 import "./interfaces/ISemiFungiblePositionManager.sol";
 import "./ReceiptBase.sol";
-import "./interfaces/IPanopticPool.sol";
+import "./interfaces/IOptionsPool.sol";
 import "./libraries/OptionEncoding.sol";
-import "./libraries/PanopticMath.sol";
-import "./PanopticBase.sol";
+import "./libraries/OptionsMath.sol";
+import "./OptionsBase.sol";
 
 //import "hardhat/console.sol";
 
 pragma abicoder v2;
 
-contract PanopticPool is PanopticBase, IPanopticPool, Ownable, ReentrancyGuard, ERC1155Holder {
+contract OptionsPool is OptionsBase, IOptionsPool, Ownable, ReentrancyGuard, ERC1155Holder {
     constructor(address _sfpm) {
         sfpm = ISemiFungiblePositionManager(_sfpm);
     }
@@ -197,9 +197,9 @@ contract PanopticPool is PanopticBase, IPanopticPool, Ownable, ReentrancyGuard, 
             int128 transactedAmount1,
             int128 premium0,
             int128 premium1
-        ) = PanopticMath.computeExercisedAmounts(pool, userOptions, tokenId, numberOfContracts);
+        ) = OptionsMath.computeExercisedAmounts(pool, userOptions, tokenId, numberOfContracts);
 
-        (uint128 contractsToken0, uint128 notionalToken1) = PanopticMath.getTotalNotionalByTokenId(
+        (uint128 contractsToken0, uint128 notionalToken1) = OptionsMath.getTotalNotionalByTokenId(
             tokenId,
             numberOfContracts,
             pool.tickSpacing()
@@ -242,14 +242,14 @@ contract PanopticPool is PanopticBase, IPanopticPool, Ownable, ReentrancyGuard, 
         uint128 numberOfContracts,
         uint8 index
     ) internal returns (uint256 contracts, uint256 notionalValue) {
-        TickInfo memory tickInfo = PanopticMath.getTicksAndLegLiquidityEff(
+        TickInfo memory tickInfo = OptionsMath.getTicksAndLegLiquidityEff(
             tokenId,
             index,
             numberOfContracts,
             tickSpacing
         );
 
-        (contracts, notionalValue) = PanopticMath.getContractsAndNotional(
+        (contracts, notionalValue) = OptionsMath.getContractsAndNotional(
             tokenId,
             numberOfContracts,
             index,
@@ -260,7 +260,7 @@ contract PanopticPool is PanopticBase, IPanopticPool, Ownable, ReentrancyGuard, 
             PositionKey.compute(address(this), tickInfo.tickLower, tickInfo.tickUpper)
         );
 
-        (uint128 feesBase0, uint128 feesBase1) = PanopticMath.calculateBaseFees(
+        (uint128 feesBase0, uint128 feesBase1) = OptionsMath.calculateBaseFees(
             pool,
             tickInfo.tickLower,
             tickInfo.tickUpper,

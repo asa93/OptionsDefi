@@ -7,18 +7,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
-import "./PanopticPool.sol";
+import "./OptionsPool.sol";
 import "./ReceiptBase.sol";
 
-contract PanopticFactory is Ownable, ReentrancyGuard {
+contract OptionsFactory is Ownable, ReentrancyGuard {
     event PoolDeployed(address poolAddress, address uniSwapPool);
-    // dev Reference implementation of the panoptic pool to clone.
+    // dev Reference implementation of the options pool to clone.
     address private poolReference;
     // dev Reference implementation of the receipt token to clone.
     address private receiptReference;
 
-    /// @dev univ3 pool => panoptic pool
-    mapping(address => address) public panopticPools;
+    /// @dev univ3 pool => options pool
+    mapping(address => address) public optionsPools;
 
     /// @dev IDs of pools assigned by this contract
     mapping(address => uint80) private _poolIds;
@@ -30,7 +30,7 @@ contract PanopticFactory is Ownable, ReentrancyGuard {
     constructor(address _SFPM) {
         // deploy base pool contract to use as reference
 
-        poolReference = address(new PanopticPool(_SFPM));
+        poolReference = address(new OptionsPool(_SFPM));
         receiptReference = address(new ReceiptBase());
     }
 
@@ -43,7 +43,7 @@ contract PanopticFactory is Ownable, ReentrancyGuard {
         newPoolAddress = Clones.clone(poolReference);
 
         // Set the pool address (can only be done once)
-        PanopticPool newPoolContract = PanopticPool(payable(address(newPoolAddress)));
+        OptionsPool newPoolContract = OptionsPool(payable(address(newPoolAddress)));
         newPoolContract.startPool(_poolAddress, receiptReference);
 
         // Transfer ownership of the pool to the msg sender

@@ -2,7 +2,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 
 // deploy/0-deploy-Greeter.ts
-const deployPanopticFactory: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployOptionsFactory: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
     deployments,
     deployments: { deploy },
@@ -11,22 +11,22 @@ const deployPanopticFactory: DeployFunction = async function (hre: HardhatRuntim
   const { deployer } = await getNamedAccounts();
 
   if (process.env.WITH_PROXY) return;
-  const { address: panopticMathLibAddress } = await deployments.get("PanopticMath");
-  const { address: panopticHealthLibAddress } = await deployments.get("PanopticHealth");
+  const { address: optionsMathLibAddress } = await deployments.get("OptionsMath");
+  const { address: optionsHealthLibAddress } = await deployments.get("OptionsHealth");
   const { address: optionEncodingLibAddress } = await deployments.get("OptionEncoding");
   const { address: sfpmAddress } = await deployments.get("SemiFungiblePositionManager");
 
-  await deploy("PanopticFactory", {
+  await deploy("OptionsFactory", {
     from: deployer,
     args: [sfpmAddress],
     libraries: {
-      PanopticMath: panopticMathLibAddress,
-      PanopticHealth: panopticHealthLibAddress,
+      OptionsMath: optionsMathLibAddress,
+      OptionsHealth: optionsHealthLibAddress,
       OptionEncoding: optionEncodingLibAddress,
     },
     log: true,
   });
 };
 
-export default deployPanopticFactory;
-deployPanopticFactory.tags = ["PanopticFactory"];
+export default deployOptionsFactory;
+deployOptionsFactory.tags = ["OptionsFactory"];

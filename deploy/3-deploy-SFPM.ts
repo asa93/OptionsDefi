@@ -13,7 +13,7 @@ const deploySFPM: DeployFunction = async function (hre: HardhatRuntimeEnvironmen
   if (process.env.WITH_PROXY) return;
 
   const { address: optionEncodingLibAddress } = await deployments.get("OptionEncoding");
-  const { address: panopticMathLibAddress } = await deployments.get("PanopticMath");
+  const { address: optionsMathLibAddress } = await deployments.get("OptionsMath");
   const UNISWAPV3_FACTORY_ADDRESS = "0x1F98431c8aD98523631AE4a59f267346ea31F984";
   const WETH_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 
@@ -22,7 +22,7 @@ const deploySFPM: DeployFunction = async function (hre: HardhatRuntimeEnvironmen
     args: [UNISWAPV3_FACTORY_ADDRESS, WETH_ADDRESS],
     libraries: {
       OptionEncoding: optionEncodingLibAddress,
-      PanopticMath: panopticMathLibAddress,
+      OptionsMath: optionsMathLibAddress,
     },
     log: true,
   });

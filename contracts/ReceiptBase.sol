@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 // This contract is used for printing IOU tokens
 contract ReceiptBase is ERC20 {
     address public underlyingToken;
-    string public constant DETAILS = "panoptic.xyz";
+    string public constant DETAILS = "options.xyz";
     string public constant prefix = "PAN-";
     address private _owner;
     uint8 private _decimals;

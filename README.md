@@ -1,20 +1,20 @@
-# Panoptic Finance
+# Options Finance
 
-[![Coverage Status](https://coveralls.io/repos/github/advancedblockchain/Panoptic/badge.svg?t=Nrsw6V)](https://coveralls.io/github/advancedblockchain/Panoptic)
+[![Coverage Status](https://coveralls.io/repos/github/advancedblockchain/Options/badge.svg?t=Nrsw6V)](https://coveralls.io/github/advancedblockchain/Options)
 
-Panoptic is a governance-minimized options trading protocol. It enables the permissionless trading of perpetual options on top of any asset pool in the Uniswap v3 ecosystem. The Panoptic protocol is noncustodial, has no counterparty risk, offers instantaneous settlement, and is designed to remain fully-collateralized at all time.
+Options is a governance-minimized options trading protocol. It enables the permissionless trading of perpetual options on top of any asset pool in the Uniswap v3 ecosystem. The Options protocol is noncustodial, has no counterparty risk, offers instantaneous settlement, and is designed to remain fully-collateralized at all time.
 
 ```mermaid
 graph TD;
     classDef user fill:#f96;
-    classDef panoptic fill:#038cfc;
+    classDef options fill:#038cfc;
     classDef uni fill:#fc039d;
-    PLP(Panoptic LP):::user --> |deposit/withdraw| PP1
+    PLP(Options LP):::user --> |deposit/withdraw| PP1
     PLP & POT & REG --> |deploy for univ3 pool| PF
-    PF[Panoptic Factory]:::panoptic --> |deploy for univ3 pool| PP1
-    POT(Panoptic Options Trader):::user -->|mint/burn options| PP1[Panoptic token0-token1 pool]:::panoptic
+    PF[Options Factory]:::options --> |deploy for univ3 pool| PP1
+    POT(Options Options Trader):::user -->|mint/burn options| PP1[Options token0-token1 pool]:::options
     REG(UniV3 LP):::user --> |mint/burn| SFPM
-    PP1 --> |mint/burn| SFPM[Semi fungible position manager]:::panoptic
+    PP1 --> |mint/burn| SFPM[Semi fungible position manager]:::options
 
     SFPM --> |mint/burn| UNI1[UniV3 token0-token1 pool]:::uni
 ```

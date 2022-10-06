@@ -27,7 +27,7 @@ describe("SemiFungiblePositionManager", function () {
   before(async () => {
     await deployments.fixture([
       "OptionEncoding",
-      "PanopticMath",
+      "OptionsMath",
       SFPMContractName,
       UniswapV3MockPoolDeploymentName,
     ]);

@@ -5,13 +5,13 @@ import {
   ERC20__factory,
   IUniswapV3Pool,
   IUniswapV3Pool__factory,
-  PanopticPool,
+  OptionsPool,
   ERC20,
   SemiFungiblePositionManager,
-  MockPanopticHealth,
-  PanopticHealth,
+  MockOptionsHealth,
+  OptionsHealth,
   ISwapRouter,
-  PanopticMath,
+  OptionsMath,
 } from "../types";
 
 import * as OptionEncoding from "./libraries/OptionEncoding";
@@ -34,17 +34,17 @@ const SWAP_ROUTER_ADDRESS = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
 const decimalUSDC = 6;
 const decimalWETH = 18;
 
-describe("PanopticPool", function () {
-  const contractName = "PanopticPool";
-  const deploymentName = "PanopticPool-ETH-USDC";
+describe("OptionsPool", function () {
+  const contractName = "OptionsPool";
+  const deploymentName = "OptionsPool-ETH-USDC";
 
   const SFPMContractName = "SemiFungiblePositionManager";
   const SFPMDeploymentName = "SemiFungiblePositionManager";
 
-  let pool: PanopticPool;
+  let pool: OptionsPool;
   let uniPool: IUniswapV3Pool;
-  let panopticMath: PanopticMath;
-  let panopticHealth: PanopticHealth;
+  let optionsMath: OptionsMath;
+  let optionsHealth: OptionsHealth;
 
   let deployer: Signer;
   let optionWriter: Signer;
@@ -86,10 +86,10 @@ describe("PanopticPool", function () {
   beforeEach(async () => {
     await deployments.fixture([
       deploymentName,
-      "PanopticFactory",
+      "OptionsFactory",
       "OptionEncoding",
-      "PanopticMath",
-      "PanopticHealth",
+      "OptionsMath",
+      "OptionsHealth",
       "SemiFungiblePositionManager",
     ]);
     const { address } = await deployments.get(deploymentName);
@@ -101,7 +101,7 @@ describe("PanopticPool", function () {
     await grantTokens(WETH_ADDRESS, await optionWriter.getAddress(), WETH_SLOT, wethBalance);
     await grantTokens(USDC_ADDRESS, await optionWriter.getAddress(), USDC_SLOT, usdcBalance);
 
-    pool = (await ethers.getContractAt(contractName, address)) as PanopticPool;
+    pool = (await ethers.getContractAt(contractName, address)) as OptionsPool;
 
     const SFPMdeployment = await deployments.get(SFPMDeploymentName);
 
@@ -139,19 +139,19 @@ describe("PanopticPool", function () {
 
     // initialize the pool
 
-    const PanopticMathDeployment = await deployments.get("PanopticMath");
+    const OptionsMathDeployment = await deployments.get("OptionsMath");
 
-    panopticMath = (await ethers.getContractAt(
-      "PanopticMath",
-      PanopticMathDeployment.address
-    )) as PanopticMath;
+    optionsMath = (await ethers.getContractAt(
+      "OptionsMath",
+      OptionsMathDeployment.address
+    )) as OptionsMath;
 
-    const panopticHealthDeployment = await deployments.get("PanopticHealth");
+    const optionsHealthDeployment = await deployments.get("OptionsHealth");
 
-    panopticHealth = (await ethers.getContractAt(
-      "PanopticHealth",
-      panopticHealthDeployment.address
-    )) as PanopticHealth;
+    optionsHealth = (await ethers.getContractAt(
+      "OptionsHealth",
+      optionsHealthDeployment.address
+    )) as OptionsHealth;
   });
 
   it("should deploy the pool", async function () {
@@ -470,7 +470,7 @@ describe("PanopticPool", function () {
       const receipt = await resolved.wait();
       console.log(" Gas used = " + receipt.gasUsed.toNumber());
 
-      const notionals = await panopticMath.getTotalNotionalByTokenId(
+      const notionals = await optionsMath.getTotalNotionalByTokenId(
         tokenId,
         numberOfContracts,
         await uniPool.tickSpacing()
@@ -499,7 +499,7 @@ describe("PanopticPool", function () {
         tick.toString()
       );
 
-      // const required = await panopticHealth.getPositionCollateralAtTick(
+      // const required = await optionsHealth.getPositionCollateralAtTick(
       //   tokenId,
       //   numberOfContracts,
       //   tick,
@@ -517,8 +517,8 @@ describe("PanopticPool", function () {
       //   required.token1Required
       // );
 
-      // const decimals = await panopticHealth.DECIMALS();
-      // const COLLATERAL_MARGIN_RATIO = await panopticHealth.COLLATERAL_MARGIN_RATIO();
+      // const decimals = await optionsHealth.DECIMALS();
+      // const COLLATERAL_MARGIN_RATIO = await optionsHealth.COLLATERAL_MARGIN_RATIO();
       // let status;
       // if (token0Balance.gte(required.token0Required)) {
       //   status = "HEALTHY";

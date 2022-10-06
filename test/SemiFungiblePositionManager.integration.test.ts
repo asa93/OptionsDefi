@@ -33,7 +33,7 @@ describe("SemiFungiblePositionManager-integration", function () {
       users[0].address,
       "0x1000000000000000000000000000",
     ]);
-    await deployments.fixture(["OptionEncoding", "PanopticMath", SFPMContractName]);
+    await deployments.fixture(["OptionEncoding", "OptionsMath", SFPMContractName]);
     const { address: sfpmAddress } = await deployments.get(SFPMContractName);
 
     positionManager = (await ethers.getContractAt(

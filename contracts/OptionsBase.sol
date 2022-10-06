@@ -2,7 +2,7 @@
 
 pragma solidity 0.7.6;
 
-contract PanopticBase {
+contract OptionsBase {
     struct Option {
         uint128 feesBase0;
         uint128 feesBase1;

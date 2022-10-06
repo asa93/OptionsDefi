@@ -1,8 +1,8 @@
 pragma solidity 0.7.6;
 
-import "../libraries/PanopticHealth.sol";
+import "../libraries/OptionsHealth.sol";
 
-contract MockPanopticHealth {
+contract MockOptionsHealth {
     ///@dev modified checkHealth method
     ///handling one position ID only because we cannot pass storage as params oustide of internal methods
     function checkHealth(
@@ -16,8 +16,8 @@ contract MockPanopticHealth {
         public
         view
         returns (
-            PanopticHealth.UserStatus callStatus,
-            PanopticHealth.UserStatus putStatus,
+            OptionsHealth.UserStatus callStatus,
+            OptionsHealth.UserStatus putStatus,
             uint256 token0Required,
             uint256 token1Required
         )
@@ -33,7 +33,7 @@ contract MockPanopticHealth {
 
             require(userPositionBalance > 0, "Non existing user position");
 
-            (token0Required, token1Required) = PanopticHealth.getPositionCollateralAtTick(
+            (token0Required, token1Required) = OptionsHealth.getPositionCollateralAtTick(
                 positionId,
                 userPositionBalance,
                 tickSpacing,
@@ -46,8 +46,8 @@ contract MockPanopticHealth {
         );
 
         (callStatus, putStatus) = (
-            PanopticHealth.getStatus(token0Balance, token0Required),
-            PanopticHealth.getStatus(token1Balance, token1Required)
+            OptionsHealth.getStatus(token0Balance, token0Required),
+            OptionsHealth.getStatus(token1Balance, token1Required)
         );
     }
 }

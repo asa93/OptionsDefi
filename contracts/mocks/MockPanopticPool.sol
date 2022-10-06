@@ -2,12 +2,12 @@ pragma solidity 0.7.6;
 pragma abicoder v2;
 
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
-import "../interfaces/IPanopticPool.sol";
+import "../interfaces/IOptionsPool.sol";
 import "../interfaces/ISemiFungiblePositionManager.sol";
 
 import "hardhat/console.sol";
 
-contract MockPanopticPool is IPanopticPool {
+contract MockOptionsPool is IOptionsPool {
     IUniswapV3Pool public pool;
     address public token0;
     address public token1;

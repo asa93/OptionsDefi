@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ABI, DeployFunction } from "hardhat-deploy/types";
 
-const deployMockPanopticFactory: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployMockOptionsFactory: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
     deployments,
     deployments: { deploy },
@@ -12,7 +12,7 @@ const deployMockPanopticFactory: DeployFunction = async function (hre: HardhatRu
 
   const { address: sfpmAddress } = await deployments.get("MockSFPM");
 
-  await deploy("MockPanopticFactory", {
+  await deploy("MockOptionsFactory", {
     from: deployer,
     args: [sfpmAddress],
     libraries: {},
@@ -20,5 +20,5 @@ const deployMockPanopticFactory: DeployFunction = async function (hre: HardhatRu
   });
 };
 
-export default deployMockPanopticFactory;
-deployMockPanopticFactory.tags = ["MockPanopticFactory"];
+export default deployMockOptionsFactory;
+deployMockOptionsFactory.tags = ["MockOptionsFactory"];

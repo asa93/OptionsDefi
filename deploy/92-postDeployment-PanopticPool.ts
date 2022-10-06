@@ -2,9 +2,9 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ABI, DeployFunction } from "hardhat-deploy/types";
 import { deployments, ethers } from "hardhat";
 import {
-  PanopticFactory,
+  OptionsFactory,
   Token,
-  PanopticPool,
+  OptionsPool,
   SemiFungiblePositionManager,
   MockUniswapV3Pool,
 } from "../types";
@@ -15,7 +15,7 @@ const WETH_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 const USDC_ADDRESS = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
 const USDC_SLOT = 9;
 
-const testPanopticPool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const testOptionsPool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
 
   const { deployer, seller, buyer } = await getNamedAccounts();
@@ -23,8 +23,8 @@ const testPanopticPool: DeployFunction = async function (hre: HardhatRuntimeEnvi
   const { address: token1Address } = await deployments.get("Token1");
   const token1 = (await ethers.getContractAt("Token", token1Address)) as Token;
   const amount1 = ethers.utils.parseEther("10");
-  const { address: poolAddress } = await deployments.get("PanopticPool-ETH-USDC");
-  const pool = (await ethers.getContractAt("PanopticPool", poolAddress)) as PanopticPool;
+  const { address: poolAddress } = await deployments.get("OptionsPool-ETH-USDC");
+  const pool = (await ethers.getContractAt("OptionsPool", poolAddress)) as OptionsPool;
 
   //granting USDC and WETH (forked mainnet)
   // await grantTokens(WETH_ADDRESS, deployer, WETH_SLOT, wethBalance);
@@ -112,5 +112,5 @@ const testPanopticPool: DeployFunction = async function (hre: HardhatRuntimeEnvi
   // console.log("blockNumber", poolStartedEvent[0].blockNumber);
 };
 
-export default testPanopticPool;
-testPanopticPool.tags = ["testPanopticPool"];
+export default testOptionsPool;
+testOptionsPool.tags = ["testOptionsPool"];

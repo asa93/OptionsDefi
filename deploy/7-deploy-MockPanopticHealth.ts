@@ -1,30 +1,30 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ABI, DeployFunction } from "hardhat-deploy/types";
 import { deployments, ethers } from "hardhat";
-import { MockPanopticHealth, MockPanopticHealth__factory } from "../types";
+import { MockOptionsHealth, MockOptionsHealth__factory } from "../types";
 
 // deploy/0-deploy-Greeter.ts
-const deployMockPanopticHealth: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployMockOptionsHealth: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments } = hre;
 
   if (process.env.WITH_PROXY) return;
 
-  const { address: panopticHealthLibAddress } = await deployments.get("PanopticHealth");
+  const { address: optionsHealthLibAddress } = await deployments.get("OptionsHealth");
 
-  const MockPanopticHealth = (await ethers.getContractFactory("MockPanopticHealth", {
+  const MockOptionsHealth = (await ethers.getContractFactory("MockOptionsHealth", {
     libraries: {
-      PanopticHealth: panopticHealthLibAddress,
+      OptionsHealth: optionsHealthLibAddress,
     },
-  })) as MockPanopticHealth__factory;
+  })) as MockOptionsHealth__factory;
 
-  let mockPanopticHealth = await MockPanopticHealth.deploy();
-  let abi = mockPanopticHealth.interface.format(ethers.utils.FormatTypes.json);
-  await deployments.save("MockPanopticHealth", {
-    address: mockPanopticHealth.address,
+  let mockOptionsHealth = await MockOptionsHealth.deploy();
+  let abi = mockOptionsHealth.interface.format(ethers.utils.FormatTypes.json);
+  await deployments.save("MockOptionsHealth", {
+    address: mockOptionsHealth.address,
     abi: abi as ABI,
   });
-  console.log(`MockPanopticHealth deployed at ${mockPanopticHealth.address}`);
+  console.log(`MockOptionsHealth deployed at ${mockOptionsHealth.address}`);
 };
 
-export default deployMockPanopticHealth;
-deployMockPanopticHealth.tags = ["MockPanopticHealth"];
+export default deployMockOptionsHealth;
+deployMockOptionsHealth.tags = ["MockOptionsHealth"];

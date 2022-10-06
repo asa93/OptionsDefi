@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ABI, DeployFunction } from "hardhat-deploy/types";
 import { deployments, ethers } from "hardhat";
-import { PanopticFactory, Token__factory, MockUniswapV3Pool__factory } from "../types";
+import { OptionsFactory, Token__factory, MockUniswapV3Pool__factory } from "../types";
 
 // deploy/0-deploy-Greeter.ts
 const deployMockUniswapV3Pool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {

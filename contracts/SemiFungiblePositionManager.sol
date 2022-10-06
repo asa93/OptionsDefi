@@ -11,7 +11,7 @@ import "@uniswap/v3-periphery/contracts/libraries/PositionKey.sol";
 import "@uniswap/v3-periphery/contracts/base/LiquidityManagement.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "./libraries/OptionEncoding.sol";
-import "./libraries/PanopticMath.sol";
+import "./libraries/OptionsMath.sol";
 import "./interfaces/ISemiFungiblePositionManager.sol";
 
 //import "hardhat/console.sol";
@@ -193,7 +193,7 @@ contract SemiFungiblePositionManager is
                 break;
             }
 
-            PanopticBase.TickInfo memory tickInfo = PanopticMath.getTicksAndLegLiquidityEff(
+            OptionsBase.TickInfo memory tickInfo = OptionsMath.getTicksAndLegLiquidityEff(
                 tokenId,
                 i,
                 numberOfContracts,
@@ -381,14 +381,14 @@ contract SemiFungiblePositionManager is
                 break;
             }
 
-            PanopticBase.TickInfo memory oldTickInfo = PanopticMath.getTicksAndLegLiquidityEff(
+            OptionsBase.TickInfo memory oldTickInfo = OptionsMath.getTicksAndLegLiquidityEff(
                 oldTokenId,
                 i,
                 numberOfContracts,
                 oldPool.tickSpacing()
             );
 
-            PanopticBase.TickInfo memory newTickInfo = PanopticMath.getTicksAndLegLiquidityEff(
+            OptionsBase.TickInfo memory newTickInfo = OptionsMath.getTicksAndLegLiquidityEff(
                 newTokenId,
                 i,
                 numberOfContracts,

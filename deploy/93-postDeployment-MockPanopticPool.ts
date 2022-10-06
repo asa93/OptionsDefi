@@ -2,9 +2,9 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ABI, DeployFunction } from "hardhat-deploy/types";
 import { deployments, ethers } from "hardhat";
 import {
-  PanopticFactory,
+  OptionsFactory,
   Token,
-  PanopticPool,
+  OptionsPool,
   SemiFungiblePositionManager,
   MockUniswapV3Pool,
 } from "../types";
@@ -18,13 +18,13 @@ const USDC_SLOT = 9;
 const usdcBalance = ethers.utils.parseUnits("100000000", "6");
 const wethBalance = ethers.utils.parseEther("1000");
 
-const testMockPanopticPool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const testMockOptionsPool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
 
   const { deployer, seller, buyer } = await getNamedAccounts();
 
-  const { address: poolAddress } = await deployments.get("MockPanopticPool");
-  const pool = (await ethers.getContractAt("MockPanopticPool", poolAddress)) as PanopticPool;
+  const { address: poolAddress } = await deployments.get("MockOptionsPool");
+  const pool = (await ethers.getContractAt("MockOptionsPool", poolAddress)) as OptionsPool;
 
   ///////////// MINT OPTION FOR GRAPH TEST
   // to comment for proper deployment
@@ -104,5 +104,5 @@ const testMockPanopticPool: DeployFunction = async function (hre: HardhatRuntime
   console.log("blockNumber", poolStartedEvent[0].blockNumber);
 };
 
-export default testMockPanopticPool;
-testMockPanopticPool.tags = ["testPanopticPool"];
+export default testMockOptionsPool;
+testMockOptionsPool.tags = ["testOptionsPool"];

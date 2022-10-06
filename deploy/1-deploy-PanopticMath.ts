@@ -2,7 +2,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { deployments } from "hardhat";
 
-const deployPanopticMath: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployOptionsMath: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
     deployments: { deploy },
     getNamedAccounts,
@@ -13,7 +13,7 @@ const deployPanopticMath: DeployFunction = async function (hre: HardhatRuntimeEn
 
   const { address: optionEncodingLibAddress } = await deployments.get("OptionEncoding");
 
-  await deploy("PanopticMath", {
+  await deploy("OptionsMath", {
     from: deployer,
     log: true,
     libraries: {
@@ -22,5 +22,5 @@ const deployPanopticMath: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 };
 
-export default deployPanopticMath;
-deployPanopticMath.tags = ["PanopticMath"];
+export default deployOptionsMath;
+deployOptionsMath.tags = ["OptionsMath"];

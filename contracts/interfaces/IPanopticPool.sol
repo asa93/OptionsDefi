@@ -3,7 +3,7 @@
 pragma solidity 0.7.6;
 pragma abicoder v2;
 
-interface IPanopticPool {
+interface IOptionsPool {
     function startPool(address _pool, address _receiptReference) external;
 
     event Deposited(address user, address tokenAddress, uint256 amount);

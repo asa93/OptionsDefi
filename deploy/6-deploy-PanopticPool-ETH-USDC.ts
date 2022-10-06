@@ -2,9 +2,9 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ABI, DeployFunction } from "hardhat-deploy/types";
 import { deployments, ethers } from "hardhat";
 import {
-  PanopticFactory,
+  OptionsFactory,
   Token,
-  PanopticPool,
+  OptionsPool,
   SemiFungiblePositionManager,
   MockUniswapV3Pool,
 } from "../types";
@@ -19,22 +19,22 @@ const usdcBalance = ethers.utils.parseUnits("100000000", "6");
 const wethBalance = ethers.utils.parseEther("1000");
 
 // deploy/0-deploy-Greeter.ts
-const deployPanopticPool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployOptionsPool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
 
   if (process.env.WITH_PROXY) return;
 
-  const { address: panopticHealthLibAddress } = await deployments.get("PanopticHealth");
-  const { address: factoryAddress } = await deployments.get("PanopticFactory");
-  const { address: panopticMathLibAddress } = await deployments.get("PanopticMath");
+  const { address: optionsHealthLibAddress } = await deployments.get("OptionsHealth");
+  const { address: factoryAddress } = await deployments.get("OptionsFactory");
+  const { address: optionsMathLibAddress } = await deployments.get("OptionsMath");
   const { address: mockUnisapV3PoolAddress } = await deployments.get("MockUniswapV3Pool");
 
   //const { address: optionEncodingLibAddress } = await deployments.get("OptionEncoding");
 
   const factory = (await ethers.getContractAt(
-    "PanopticFactory",
+    "OptionsFactory",
     factoryAddress
-  )) as PanopticFactory;
+  )) as OptionsFactory;
 
   let ETH_USDC_POOL_ADDRESS =
     hre.network.name === "hardhat" || hre.network.name === "mainnet"
@@ -47,19 +47,19 @@ const deployPanopticPool: DeployFunction = async function (hre: HardhatRuntimeEn
   let eventFilterFactory = factory.filters["PoolDeployed(address,address)"]();
   const poolDeployedEvent = await factory.queryFilter(eventFilterFactory);
   const { poolAddress } = poolDeployedEvent[0].args;
-  const pool = await ethers.getContractFactory("PanopticPool", {
+  const pool = await ethers.getContractFactory("OptionsPool", {
     libraries: {
-      PanopticMath: panopticMathLibAddress,
+      OptionsMath: optionsMathLibAddress,
       //OptionEncoding: optionEncodingLibAddress,
-      PanopticHealth: panopticHealthLibAddress,
+      OptionsHealth: optionsHealthLibAddress,
     },
   });
   const abi = pool.interface.format(ethers.utils.FormatTypes.json);
 
-  await deployments.save("PanopticPool-ETH-USDC", { address: poolAddress, abi: abi as ABI });
+  await deployments.save("OptionsPool-ETH-USDC", { address: poolAddress, abi: abi as ABI });
 
-  console.log(`Panoptic pool for ETH-USDC deployed at ${poolAddress}`);
+  console.log(`Options pool for ETH-USDC deployed at ${poolAddress}`);
 };
 
-export default deployPanopticPool;
-deployPanopticPool.tags = ["PanopticPool-ETH-USDC"];
+export default deployOptionsPool;
+deployOptionsPool.tags = ["OptionsPool-ETH-USDC"];

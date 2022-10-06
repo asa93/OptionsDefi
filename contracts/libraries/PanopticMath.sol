@@ -9,11 +9,11 @@ import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import "@uniswap/v3-periphery/contracts/libraries/LiquidityAmounts.sol";
 import "@uniswap/v3-core/contracts/libraries/FixedPoint128.sol";
 import "./OptionEncoding.sol";
-import "../PanopticBase.sol";
+import "../OptionsBase.sol";
 
 //import "hardhat/console.sol";
 
-library PanopticMath {
+library OptionsMath {
     uint16 public constant DECIMALS = 10000;
 
     function getNotional(
@@ -56,7 +56,7 @@ library PanopticMath {
         uint8 index,
         uint128 numberOfContracts,
         int24 tickSpacing
-    ) public pure returns (PanopticBase.TickInfo memory tickInfo) {
+    ) public pure returns (OptionsBase.TickInfo memory tickInfo) {
         (tickInfo.tickLower, tickInfo.tickUpper) = asTicks(
             int24(OptionEncoding.efficientDecodeID(tokenId, 5, index)), //strike
             int24(OptionEncoding.efficientDecodeID(tokenId, 6, index)), //width
@@ -151,10 +151,10 @@ library PanopticMath {
         IUniswapV3Pool pool,
         uint256 tokenId,
         uint8 index,
-        PanopticBase.Option memory op,
+        OptionsBase.Option memory op,
         uint128 numberOfContracts
     ) public view returns (int128 premium0, int128 premium1) {
-        PanopticBase.TickInfo memory tickInfo = getTicksAndLegLiquidityEff(
+        OptionsBase.TickInfo memory tickInfo = getTicksAndLegLiquidityEff(
             tokenId,
             index,
             numberOfContracts,
@@ -268,7 +268,7 @@ library PanopticMath {
 
     function computeExercisedAmounts(
         IUniswapV3Pool pool,
-        PanopticBase.Option[] calldata userOptions,
+        OptionsBase.Option[] calldata userOptions,
         uint256 tokenId,
         uint128 numberOfContracts
     )
@@ -286,7 +286,7 @@ library PanopticMath {
             if (OptionEncoding.efficientDecodeID(tokenId, 1, index) == 0) {
                 break;
             }
-            PanopticBase.Option memory op = userOptions[index];
+            OptionsBase.Option memory op = userOptions[index];
 
             (int128 feesToken0, int128 feesToken1) = calculatePositionFees(
                 pool,

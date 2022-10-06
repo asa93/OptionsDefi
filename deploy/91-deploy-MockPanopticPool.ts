@@ -2,14 +2,14 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ABI, DeployFunction } from "hardhat-deploy/types";
 import { deployments, ethers } from "hardhat";
 import {
-  PanopticFactory,
+  OptionsFactory,
   Token,
-  PanopticPool,
+  OptionsPool,
   SemiFungiblePositionManager,
   MockUniswapV3Pool,
 } from "../types";
 
-const deployMockPanopticPool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployMockOptionsPool: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
     deployments,
     deployments: { deploy },
@@ -18,14 +18,14 @@ const deployMockPanopticPool: DeployFunction = async function (hre: HardhatRunti
 
   const { deployer } = await getNamedAccounts();
 
-  const { address: factoryAddress } = await deployments.get("MockPanopticFactory");
+  const { address: factoryAddress } = await deployments.get("MockOptionsFactory");
 
   const { address: mockUniswapV3PoolAddress } = await deployments.get("MockUniswapV3Pool");
 
   const mockFactory = (await ethers.getContractAt(
-    "MockPanopticFactory",
+    "MockOptionsFactory",
     factoryAddress
-  )) as PanopticFactory;
+  )) as OptionsFactory;
 
   let deployPoolTx = await mockFactory.deployToNewPool(mockUniswapV3PoolAddress);
   let receipt = await deployPoolTx.wait();
@@ -33,14 +33,14 @@ const deployMockPanopticPool: DeployFunction = async function (hre: HardhatRunti
   let eventFilterFactory = mockFactory.filters["PoolDeployed(address,address)"]();
   const poolDeployedEvent = await mockFactory.queryFilter(eventFilterFactory);
   const { poolAddress } = poolDeployedEvent[0].args;
-  const poolContractFactory = await ethers.getContractFactory("MockPanopticPool", {
+  const poolContractFactory = await ethers.getContractFactory("MockOptionsPool", {
     libraries: {},
   });
   const abi = poolContractFactory.interface.format(ethers.utils.FormatTypes.json);
 
-  await deployments.save("MockPanopticPool", { address: poolAddress, abi: abi as ABI });
+  await deployments.save("MockOptionsPool", { address: poolAddress, abi: abi as ABI });
 
-  console.log(`MockPanopticPool deployed at ${poolAddress}`);
+  console.log(`MockOptionsPool deployed at ${poolAddress}`);
 
   ///////////////////
   /// deposit weth
@@ -48,11 +48,11 @@ const deployMockPanopticPool: DeployFunction = async function (hre: HardhatRunti
   const token1 = (await ethers.getContractAt("Token", token1Address)) as Token;
   const amount1 = ethers.utils.parseEther("10");
 
-  const pool = (await ethers.getContractAt("PanopticPool", poolAddress)) as PanopticPool;
+  const pool = (await ethers.getContractAt("OptionsPool", poolAddress)) as OptionsPool;
 
   deployPoolTx = await pool.deposit(amount1, token1.address);
   receipt = await deployPoolTx.wait();
 };
 
-export default deployMockPanopticPool;
-deployMockPanopticPool.tags = ["MockPanopticPool"];
+export default deployMockOptionsPool;
+deployMockOptionsPool.tags = ["MockOptionsPool"];

@@ -2,7 +2,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { deployments } from "hardhat";
 
-const deployPanopticHealth: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployOptionsHealth: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
     deployments: { deploy },
     getNamedAccounts,
@@ -12,17 +12,17 @@ const deployPanopticHealth: DeployFunction = async function (hre: HardhatRuntime
   if (process.env.WITH_PROXY) return;
 
   const { address: optionEncodingLibAddress } = await deployments.get("OptionEncoding");
-  const { address: PanopticMath } = await deployments.get("PanopticMath");
+  const { address: OptionsMath } = await deployments.get("OptionsMath");
 
-  await deploy("PanopticHealth", {
+  await deploy("OptionsHealth", {
     from: deployer,
     log: true,
     libraries: {
       OptionEncoding: optionEncodingLibAddress,
-      PanopticMath: PanopticMath,
+      OptionsMath: OptionsMath,
     },
   });
 };
 
-export default deployPanopticHealth;
-deployPanopticHealth.tags = ["PanopticHealth"];
+export default deployOptionsHealth;
+deployOptionsHealth.tags = ["OptionsHealth"];

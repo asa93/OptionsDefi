@@ -5,11 +5,11 @@ pragma abicoder v2;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "./PanopticMath.sol";
-import "../PanopticBase.sol";
+import "./OptionsMath.sol";
+import "../OptionsBase.sol";
 import "hardhat/console.sol";
 
-library PanopticHealth {
+library OptionsHealth {
     uint256 public constant DECIMALS = 10000;
 
     uint256 public constant COLLATERAL_MARGIN_RATIO = 12000;
@@ -43,10 +43,10 @@ library PanopticHealth {
             } else {
                 uint160 ratio = tokenType == 1 // tokenType
                     ? TickMath.getSqrtRatioAtTick(
-                        PanopticMath.min24(2 * (currentTick - strike), TickMath.MAX_TICK)
+                        OptionsMath.min24(2 * (currentTick - strike), TickMath.MAX_TICK)
                     ) // puts // strike
                     : TickMath.getSqrtRatioAtTick(
-                        PanopticMath.max24(2 * (strike - currentTick), TickMath.MIN_TICK)
+                        OptionsMath.max24(2 * (strike - currentTick), TickMath.MIN_TICK)
                     ); // calls // strike
 
                 uint256 c2 = DECIMALS - SELL_COLLATERAL_RATIO;
@@ -78,7 +78,7 @@ library PanopticHealth {
                 break;
             }
 
-            (uint128 contracts, uint128 notional) = PanopticMath.getContractsAndNotional(
+            (uint128 contracts, uint128 notional) = OptionsMath.getContractsAndNotional(
                 positionId,
                 numberOfContracts,
                 index,
@@ -188,8 +188,8 @@ library PanopticHealth {
         address receiptToken1
     ) public view returns (uint256 token0Required, uint256 token1Required) {
         (
-            PanopticHealth.UserStatus callStatus,
-            PanopticHealth.UserStatus putStatus,
+            OptionsHealth.UserStatus callStatus,
+            OptionsHealth.UserStatus putStatus,
             uint256 token0Required,
             uint256 token1Required
         ) = checkHealth(
