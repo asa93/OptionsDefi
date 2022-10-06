@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Compile
+        env:
+          NODE_URL: ${{ secrets.NODE_URL }}
+        run: |
+          npm install --no-lockfile --force
+          npm run compile
+          npm run test
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Coverage
+        env:
+          NODE_URL: ${{ secrets.NODE_URL }}
+        run: |
+          npm install --no-lockfile --force
+          npm run compile
+          npm run coverage
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,56 @@
+Arguments: 
+  /opt/homebrew/Cellar/node/17.0.1/bin/node /opt/homebrew/bin/yarn compile
+
+PATH: 
+  /opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/pepeblasco/.cargo/bin
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  17.0.1
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  SyntaxError: /Users/pepeblasco/abag/repos/yewbow/package.json: Unexpected token } in JSON at position 496
+      at JSON.parse (<anonymous>)
+      at /opt/homebrew/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/opt/homebrew/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /opt/homebrew/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "yewbow",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "clean": "rm -rf ./cache && rm -rf ./artifacts && rm -rf ./.openzeppelin",
+      "compile": "yarn clean && hardhat compile --quiet && yarn solhint"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@uniswap/v3-core": "1.0.0",
+      "@uniswap/v3-periphery": "1.4.0",
+      "@openzeppelin/contracts": "3.4.1-solc-0.7-2",
+    },
+    "devDependencies": {
+      "@nomiclabs/hardhat-ethers": "^2.0.4",
+      "@nomiclabs/hardhat-waffle": "^2.0.2",
+      "chai": "^4.3.4",
+      "ethereum-waffle": "^3.4.0",
+      "ethers": "^5.5.3",
+      "hardhat": "^2.8.3"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

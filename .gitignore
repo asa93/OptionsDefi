@@ -1,0 +1,20 @@
+node_modules
+.env
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
+
+
+.idea
+tenderly.yaml
+.vs/*
+.DS_Store
+
+.vscode
+
+types
+deployments
